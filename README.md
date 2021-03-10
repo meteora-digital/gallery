@@ -1,6 +1,6 @@
-# Equalizer
+# Gallery
 
-Equalizer is an es6 Class which can be used to easily make a basic fading gallery with dots and autoplay.
+Gallery is an es6 Class which can be used to easily make a basic fading gallery with dots and autoplay.
 
 ## Installation
 
@@ -34,6 +34,7 @@ const myGallery = new Gallery(document.querySelector('.js-my-gallery'), {
 .js-my-gallery {
   @include meteora-gallery;
 }
+```
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
