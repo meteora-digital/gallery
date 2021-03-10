@@ -1,0 +1,41 @@
+{
+  "name": "@meteora-digital/gallery",
+  "version": "0.0.0",
+  "description": "An es6 class to create a simple image gallery.",
+  "main": "dist/js/equalizer.js",
+  "scripts": {
+    "test": "echo \"Equalizer\""
+  },
+  "keywords": [
+    "simple",
+    "gallery",
+    "es6",
+    "class",
+    "html",
+    "javascript",
+    "vanilla",
+    "fade",
+    "images",
+  ],
+  "author": "Emmanuel Davies",
+  "license": "MIT",
+  "dependencies": {
+    "@meteora-digital/helpers": "latest"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.11.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-plumber": "^1.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meteora-digital/equalizer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meteora-digital/equalizer/issues"
+  },
+  "homepage": "https://github.com/meteora-digital/equalizer#readme"
+}

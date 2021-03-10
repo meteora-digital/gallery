@@ -1,0 +1,29 @@
+// ======================================
+// Styles ===============================
+// ======================================
+
+@mixin meteora-gallery {
+  $parent: &;
+  position: relative;
+  
+  #{$parent} {
+    &--item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      z-index: 1;
+      width: 100%;
+      transition: opacity .3s ease;
+
+      &--current {
+        position: relative;
+        z-index: 2;
+      }
+
+      &--active {
+        opacity: 1;
+      }
+    }
+  }
+}
