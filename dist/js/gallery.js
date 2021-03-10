@@ -13,102 +13,122 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Equalizer = /*#__PURE__*/function () {
-  function Equalizer(el) {
+/*------------------------------------------------------------------
+Gallery
+------------------------------------------------------------------*/
+var Gallery = /*#__PURE__*/function () {
+  function Gallery(el) {
     var _this = this;
 
-    _classCallCheck(this, Equalizer);
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-    this.container = el;
-    this.children = this.getChildren();
-    this.event = new _helpers.Event('equalized');
-    window.equalizing = null;
-    (0, _helpers.attach)(window, 'resize', function () {
-      return _this.matchHeight();
-    }, 500);
-  }
+    _classCallCheck(this, Gallery);
 
-  _createClass(Equalizer, [{
-    key: "getChildren",
-    value: function getChildren() {
-      var _this2 = this;
+    this.gallery = el; // User settings
 
-      var childArray = [];
+    this.settings = (0, _helpers.objectAssign)({
+      "class": 'js-gallery',
+      autoplay: true,
+      duration: 5000,
+      dots: true
+    }, options);
+    this.slides = (0, _helpers.nodeArray)(el.querySelectorAll(".".concat(this.settings["class"], "--item")));
+    this.touch = {
+      x: 0,
+      y: 0
+    };
+    this.info = {
+      index: 0,
+      autoplay: this.settings.autoplay
+    };
 
-      try {
-        var targetArray = this.container.getAttribute('data-equalize').split(',');
-        targetArray.forEach(function (id) {
-          return childArray.push(_this2.container.querySelectorAll("[data-equalize-watch=\"".concat(id, "\"]")));
+    if (this.slides.length) {
+      this.slides[0].classList.add("".concat(this.settings["class"], "--current"));
+      this.slides[0].classList.add("".concat(this.settings["class"], "--active"));
+    }
+
+    if (this.slides.length >= 2) {
+      this.play();
+
+      if (this.settings.dots) {
+        this.dots = document.createElement('div');
+        this.dots.classList.add("".concat(this.settings["class"], "--dots"));
+        this.slides.forEach(function (slide) {
+          return _this.dots.appendChild(document.createElement('button'));
         });
-      } catch (err) {
-        childArray.push(this.container.querySelectorAll("[data-equalize-watch]"));
+        this.buttons = (0, _helpers.nodeArray)(this.dots.children);
+        this.buttons.forEach(function (button, index) {
+          if (index === 0) button.classList.add('js-active');
+          button.addEventListener('click', function () {
+            if (index !== _this.info.index) _this.goTo(index);
+            if (_this.info.autoplay) _this.info.autoplay = false;
+          });
+        });
+        this.gallery.appendChild(this.dots);
       }
 
-      return childArray;
+      this.gallery.addEventListener('touchstart', function (e) {
+        _this.touch.x = e.touches[0].clientX;
+        _this.touch.y = e.touches[0].clienty;
+      });
+      this.gallery.addEventListener('touchend', function (e) {
+        var touch = e.touches[0] || e.changedTouches[0]; // Swipe right
+
+        if (_this.touch.x + 50 < touch.clientX) _this.goTo(_this.info.index > 0 ? _this.info.index - 1 : _this.slides.length - 1); // Swipe left
+
+        if (_this.touch.x - 50 > touch.clientX) _this.goTo(_this.info.index < _this.slides.length - 1 ? _this.info.index + 1 : 0);
+        _this.touch.x = touch.clientX;
+        _this.touch.y = touch.clientY;
+      });
+    }
+
+    ;
+  }
+
+  _createClass(Gallery, [{
+    key: "play",
+    value: function play() {
+      var _this2 = this;
+
+      if (this.info.autoplay) {
+        setTimeout(function () {
+          _this2.info.index = _this2.info.index >= _this2.slides.length - 1 ? 0 : _this2.info.index + 1;
+          if (_this2.info.autoplay) _this2.goTo(_this2.info.index);
+
+          _this2.play();
+        }, this.settings.duration);
+      }
     }
   }, {
-    key: "matchHeight",
-    value: function matchHeight() {
+    key: "goTo",
+    value: function goTo(index) {
       var _this3 = this;
 
-      // set height to auto so it can be adjusted
-      this.children.forEach(function (group) {
-        (0, _helpers.nodeArray)(group).forEach(function (child) {
-          child.style.height = 'auto';
+      if (typeof index === 'number' && index >= 0 && index <= this.slides.length) {
+        this.info.index = index;
+        this.buttons.forEach(function (button) {
+          if (button === _this3.buttons[_this3.info.index]) {
+            button.classList.add('js-active');
+          } else {
+            button.classList.remove('js-active');
+          }
         });
-      }); // now match all their heights
-
-      this.children.forEach(function (group) {
-        var groupArr = (0, _helpers.nodeArray)(group);
-        _this3.height = 0;
-        groupArr.forEach(function (child) {
-          if (child.clientHeight > _this3.height) _this3.height = child.clientHeight;
+        this.slides.forEach(function (slide) {
+          if (slide === _this3.slides[_this3.info.index]) {
+            slide.classList.add("".concat(_this3.settings["class"], "--current"));
+            slide.classList.add("".concat(_this3.settings["class"], "--active"));
+          } else {
+            slide.classList.remove("".concat(_this3.settings["class"], "--current"));
+            setTimeout(function () {
+              slide.classList.remove("".concat(_this3.settings["class"], "--active"));
+            }, 300);
+          }
         });
-        groupArr.forEach(function (child) {
-          return child.style.height = _this3.height + 'px';
-        });
-      });
-      clearTimeout(window.equalizing);
-      window.equalizing = setTimeout(function () {
-        window.dispatchEvent(_this3.event);
-      }, 100);
-    }
-  }, {
-    key: "update",
-    value: function update() {
-      this.children = this.getChildren();
-      this.matchHeight();
+      }
     }
   }]);
 
-  return Equalizer;
+  return Gallery;
 }();
 
-var _default = Equalizer; // ======================================================
-// JavaScript Usage
-// ======================================================
-// import Equalizer from './equalizer';
-// document.querySelectorAll('[data-equalize]').forEach((group) => new Equalizer(group));
-// ======================================================
-// HTML Usage
-// ======================================================
-// <section data-equalize>
-//   <div data-equalize-watch></div>
-//   <div data-equalize-watch></div>
-// </section>
-// OR ===================================================
-// <section data-equalize="selector">
-//   <div data-equalize-watch="selector"></div>
-//   <div data-equalize-watch="selector"></div>
-// </section>
-// OR ===================================================
-// <section data-equalize="selector1, selector2">
-//   <div data-equalize-watch="selector1">
-//      <div data-equalize-watch="selector2"></div>
-//   </div>
-//   <div data-equalize-watch="selector1">
-//      <div data-equalize-watch="selector2"></div>
-//   </div>
-// </section>
-
-exports["default"] = _default;
+exports["default"] = Gallery;
