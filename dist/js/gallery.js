@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _helpers = require("@meteora-digital/helpers");
+var _meteora = require("meteora");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26,13 +26,13 @@ var Gallery = /*#__PURE__*/function () {
 
     this.gallery = el; // User settings
 
-    this.settings = (0, _helpers.objectAssign)({
+    this.settings = (0, _meteora.objectAssign)({
       "class": 'js-gallery',
       autoplay: true,
       duration: 5000,
       dots: true
     }, options);
-    this.slides = (0, _helpers.nodeArray)(el.querySelectorAll(".".concat(this.settings["class"], "--item")));
+    this.slides = (0, _meteora.nodeArray)(el.querySelectorAll(".".concat(this.settings["class"], "--item")));
     this.touch = {
       x: 0,
       y: 0
@@ -56,7 +56,7 @@ var Gallery = /*#__PURE__*/function () {
         this.slides.forEach(function (slide) {
           return _this.dots.appendChild(document.createElement('button'));
         });
-        this.buttons = (0, _helpers.nodeArray)(this.dots.children);
+        this.buttons = (0, _meteora.nodeArray)(this.dots.children);
         this.buttons.forEach(function (button, index) {
           if (index === 0) button.classList.add('js-active');
           button.addEventListener('click', function () {

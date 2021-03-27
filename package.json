@@ -20,7 +20,7 @@
   "author": "Emmanuel Davies",
   "license": "MIT",
   "dependencies": {
-    "@meteora-digital/helpers": "latest"
+    "meteora": "latest"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",

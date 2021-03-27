@@ -2,7 +2,7 @@
 Import Modules
 ------------------------------------------------------------------*/
 
-import { nodeArray, objectAssign } from '@meteora-digital/helpers';
+import { nodeArray, objectAssign } from 'meteora';
 
 /*------------------------------------------------------------------
 Gallery
